@@ -184,7 +184,11 @@ PDFPrintService.prototype = {
           resolve();
           return;
         }
-        print.call(window);
+        if (document.queryCommandSupported('print')) {
+          window.document.execCommand('print', false, null);
+        } else {
+          print.call(window);
+        }
         // Delay promise resolution in case print() was not synchronous.
         setTimeout(resolve, 20);  // Tidy-up.
       }, 0);
